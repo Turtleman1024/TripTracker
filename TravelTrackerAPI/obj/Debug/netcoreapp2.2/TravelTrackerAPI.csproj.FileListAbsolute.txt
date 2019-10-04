@@ -1,0 +1,14 @@
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\bin\Debug\netcoreapp2.2\TravelTrackerAPI.deps.json
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\bin\Debug\netcoreapp2.2\TravelTrackerAPI.runtimeconfig.json
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\bin\Debug\netcoreapp2.2\TravelTrackerAPI.runtimeconfig.dev.json
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\bin\Debug\netcoreapp2.2\TravelTrackerAPI.dll
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.csprojAssemblyReference.cache
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.csproj.CoreCompileInputs.cache
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.RazorAssemblyInfo.cache
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.RazorAssemblyInfo.cs
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.AssemblyInfoInputs.cache
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.AssemblyInfo.cs
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.RazorTargetAssemblyInfo.cache
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\bin\Debug\netcoreapp2.2\TravelTrackerAPI.pdb
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.dll
+D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\obj\Debug\netcoreapp2.2\TravelTrackerAPI.pdb
