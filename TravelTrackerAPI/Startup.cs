@@ -31,7 +31,7 @@ namespace TravelTrackerAPI
             //services.AddTransient<Models.Repository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<TripContext>(options => options.UseSqlite("Date Source=TripTrackerDb.db"));
+            services.AddDbContext<TripContext>(options => options.UseSqlite("Data Source=TripTrackerDb.db"));
 
             services.AddSwaggerGen(options => 
                 options.SwaggerDoc("v1", new Info { Title = "Trip Tracker", Version = "v1" })
@@ -62,6 +62,8 @@ namespace TravelTrackerAPI
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            TripContext.SeedData(app.ApplicationServices);
 
         }
     }
