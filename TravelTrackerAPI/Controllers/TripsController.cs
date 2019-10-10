@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TravelTrackerAPI.Data;
 using TravelTrackerAPI.Models;
 
 namespace TravelTrackerAPI.Controllers
@@ -11,11 +12,11 @@ namespace TravelTrackerAPI.Controllers
     [ApiController]
     public class TripsController : Controller
     {
-        private Repository _repository;
+        TripContext _dbContext;
 
-        public TripsController(Repository repository)
+        public TripsController(TripContext dbContext)
         {
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
         #region GET

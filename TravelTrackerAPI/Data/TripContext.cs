@@ -7,7 +7,7 @@ using TravelTrackerAPI.Models;
 
 namespace TravelTrackerAPI.Data
 {
-    public class TripData : DbContext
+    public class TripContext : DbContext
     {
         public DbSet<Trip> Trips { get; set; }
     }
