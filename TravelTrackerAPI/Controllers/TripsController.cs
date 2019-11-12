@@ -18,7 +18,7 @@ namespace TravelTrackerAPI.Controllers
         public TripsController(TripContext dbContext)
         {
             _dbContext = dbContext;
-            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            //_dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         #region GET
@@ -28,17 +28,34 @@ namespace TravelTrackerAPI.Controllers
         {
             //Get all the trips in the database
             //This should really be done in a different class
-            var trips = await _dbContext.Trips.ToListAsync();
+            var trips = await _dbContext.Trips
+                                        .Include(t => t.Segments)
+                                        .Select( t => new TripWithSegments
+                                        {
+                                            Id = t.Id,
+                                            Name = t.Name,
+                                            StartDate = t.StartDate,
+                                            EndDate = t.EndDate,
+                                            Segments = t.Segments
+                                        })
+                                        .ToListAsync();
             return Ok(trips);
         }
 
         // GET api/Trips/5
         [HttpGet("{id}")]
-        public ActionResult<Trip> Get(int id)
+        public ActionResult<TripWithSegments> Get(int id)
         {
             //Get a Trip by the passed in primary key id
             //This should really be done in a different class
-            return _dbContext.Trips.Find(id);
+            return _dbContext.Trips.Select(t => new TripWithSegments
+                                    {
+                                        Id = t.Id,
+                                        Name = t.Name,
+                                        StartDate = t.StartDate,
+                                        EndDate = t.EndDate,
+                                        Segments = t.Segments
+                                    }).SingleOrDefault( t => t.Id == id);
         }
         #endregion
 

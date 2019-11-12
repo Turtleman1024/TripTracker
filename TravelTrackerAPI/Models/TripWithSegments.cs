@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace TravelTrackerAPI.Models
 {
-    public class Segment : TravelTrackerDTO.SegmentDTO
+    public class TripWithSegments : TravelTrackerDTO.TripDTO
     {
-        
+        public ICollection<Segment> Segments { get; set; }
+
     }
 }
