@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TravelTrackerAPI.Data;
 using TravelTrackerAPI.Models;
 
 namespace TravelTrackerAPI.Controllers
@@ -11,53 +13,151 @@ namespace TravelTrackerAPI.Controllers
     [ApiController]
     public class TripsController : Controller
     {
-        private Repository _repository;
+        TripContext _dbContext;
 
-        public TripsController(Repository repository)
+        public TripsController(TripContext dbContext)
         {
-            _repository = repository;
+            _dbContext = dbContext;
+            //_dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         #region GET
         // GET api/Trips
-        [HttpGet]
-        public ActionResult<IEnumerable<Trip>> Get()
+        /// <summary>
+        /// Asynchronously Gets All Trips in the database  
+        /// </summary>
+        [HttpGet(Name = "GetAllTripsAsync")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult> GetAllTripsAsync()
         {
-            return _repository.Get();
+            //Get all the trips in the database
+            //This should really be done in a different class
+            var trips = await _dbContext.Trips
+                                        .Include(t => t.Segments)
+                                        .Select( t => new TripWithSegments
+                                        {
+                                            Id = t.Id,
+                                            Name = t.Name,
+                                            StartDate = t.StartDate,
+                                            EndDate = t.EndDate,
+                                            Segments = t.Segments
+                                        })
+                                        .ToListAsync();
+            return Ok(trips);
         }
 
         // GET api/Trips/5
-        [HttpGet("{id}")]
-        public ActionResult<Trip> Get(int id)
+        /// <summary>
+        /// Get a Trip by its segments by id
+        /// </summary>
+        /// <param name="id">Trip Id to find</param>
+        /// <returns></returns>
+        [HttpGet("{id}", Name = "GetTripById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public ActionResult<TripWithSegments> GetTripById(int id)
         {
-            return _repository.Get(id);
+            //Get a Trip by the passed in primary key id
+            //This should really be done in a different class
+            return _dbContext.Trips.Select(t => new TripWithSegments
+                                    {
+                                        Id = t.Id,
+                                        Name = t.Name,
+                                        StartDate = t.StartDate,
+                                        EndDate = t.EndDate,
+                                        Segments = t.Segments
+                                    }).SingleOrDefault( t => t.Id == id);
         }
         #endregion
 
         #region Post
         // POST api/Trips
-        [HttpPost]
-        public void Post([FromBody] Trip value)
+        /// <summary>
+        /// Creates a new Tip
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost(Name = "CreateTrip")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult CreateTrip([FromBody] Trip value)
         {
-            _repository.Add(value);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _dbContext.Trips.Add(value);
+            _dbContext.SaveChanges();
+
+            return Ok();
         }
         #endregion
 
         #region Put
         // PUT api/Trips/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Trip value)
+        /// <summary>
+        /// Asynchronously Updates a Trip by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPut("{id}", Name = "UpdateTripByIdAsync")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateTripByIdAsync(int id, [FromBody] Trip value)
         {
-            _repository.Update(value);
+            if(_dbContext.Trips.Any(t => t.Id == id))
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _dbContext.Trips.Update(value);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
         }
         #endregion
 
         #region Delete
         // DELETE api/Trips/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Deletes a Trip by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "DeleteTripById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult DeleteTripById(int id)
         {
-            _repository.Remove(id);
+            var myTrip = _dbContext.Trips.Find(id);
+
+            if (myTrip == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Trips.Remove(myTrip);
+            _dbContext.SaveChanges();
+
+            return NoContent();
         }
         #endregion
     }
