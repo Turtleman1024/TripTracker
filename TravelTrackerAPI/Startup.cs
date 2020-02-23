@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -18,14 +19,20 @@ namespace TravelTrackerAPI
 {
     public class Startup
     {
+        /// <summary>
+        /// Contructor
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
+        /// <summary>
+        /// Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddTransient<Models.Repository>();
@@ -33,12 +40,25 @@ namespace TravelTrackerAPI
 
             services.AddDbContext<TripContext>(options => options.UseSqlite("Data Source=TripTrackerDb.db"));
 
-            services.AddSwaggerGen(options => 
-                options.SwaggerDoc("v1", new Info { Title = "Trip Tracker", Version = "v1" })
-            );
+            //services.AddSwaggerGen(options => 
+            //    options.SwaggerDoc("v1", new Info { Title = "Trip Tracker", Version = "v1" })
+            //);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new Info
+                    {
+                        Title = "My API - V1",
+                        Version = "v1"
+                    }
+                 );
+
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "TravelTrackerAPI.xml");
+                c.IncludeXmlComments(filePath);
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //Added before 

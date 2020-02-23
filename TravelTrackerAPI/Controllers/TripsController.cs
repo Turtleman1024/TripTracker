@@ -18,34 +18,76 @@ namespace TravelTrackerAPI.Controllers
         public TripsController(TripContext dbContext)
         {
             _dbContext = dbContext;
-            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            //_dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         #region GET
         // GET api/Trips
-        [HttpGet]
-        public async Task<ActionResult> GetAsync()
+        /// <summary>
+        /// Asynchronously Gets All Trips in the database  
+        /// </summary>
+        [HttpGet(Name = "GetAllTripsAsync")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult> GetAllTripsAsync()
         {
             //Get all the trips in the database
             //This should really be done in a different class
-            var trips = await _dbContext.Trips.ToListAsync();
+            var trips = await _dbContext.Trips
+                                        .Include(t => t.Segments)
+                                        .Select( t => new TripWithSegments
+                                        {
+                                            Id = t.Id,
+                                            Name = t.Name,
+                                            StartDate = t.StartDate,
+                                            EndDate = t.EndDate,
+                                            Segments = t.Segments
+                                        })
+                                        .ToListAsync();
             return Ok(trips);
         }
 
         // GET api/Trips/5
-        [HttpGet("{id}")]
-        public ActionResult<Trip> Get(int id)
+        /// <summary>
+        /// Get a Trip by its segments by id
+        /// </summary>
+        /// <param name="id">Trip Id to find</param>
+        /// <returns></returns>
+        [HttpGet("{id}", Name = "GetTripById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public ActionResult<TripWithSegments> GetTripById(int id)
         {
             //Get a Trip by the passed in primary key id
             //This should really be done in a different class
-            return _dbContext.Trips.Find(id);
+            return _dbContext.Trips.Select(t => new TripWithSegments
+                                    {
+                                        Id = t.Id,
+                                        Name = t.Name,
+                                        StartDate = t.StartDate,
+                                        EndDate = t.EndDate,
+                                        Segments = t.Segments
+                                    }).SingleOrDefault( t => t.Id == id);
         }
         #endregion
 
         #region Post
         // POST api/Trips
-        [HttpPost]
-        public IActionResult Post([FromBody] Trip value)
+        /// <summary>
+        /// Creates a new Tip
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost(Name = "CreateTrip")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult CreateTrip([FromBody] Trip value)
         {
             if (!ModelState.IsValid)
             {
@@ -61,8 +103,18 @@ namespace TravelTrackerAPI.Controllers
 
         #region Put
         // PUT api/Trips/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] Trip value)
+        /// <summary>
+        /// Asynchronously Updates a Trip by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPut("{id}", Name = "UpdateTripByIdAsync")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateTripByIdAsync(int id, [FromBody] Trip value)
         {
             if(_dbContext.Trips.Any(t => t.Id == id))
             {
@@ -83,8 +135,17 @@ namespace TravelTrackerAPI.Controllers
 
         #region Delete
         // DELETE api/Trips/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteAsync(int id)
+        /// <summary>
+        /// Deletes a Trip by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "DeleteTripById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult DeleteTripById(int id)
         {
             var myTrip = _dbContext.Trips.Find(id);
 
