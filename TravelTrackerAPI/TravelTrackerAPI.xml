@@ -25,7 +25,7 @@
         </member>
         <member name="M:TravelTrackerAPI.Controllers.TripsController.UpdateTripByIdAsync(System.Int32,TravelTrackerAPI.Models.Trip)">
             <summary>
-            Update dates a Trip 
+            Asynchronously Updates a Trip by Id
             </summary>
             <param name="id"></param>
             <param name="value"></param>

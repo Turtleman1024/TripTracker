@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using TravelTrackerAPI.Data;
 
@@ -46,9 +47,9 @@ namespace TravelTrackerAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
-                    new Info
+                    new OpenApiInfo
                     {
-                        Title = "My API - V1",
+                        Title = "Trip Tracker",
                         Version = "v1"
                     }
                  );
