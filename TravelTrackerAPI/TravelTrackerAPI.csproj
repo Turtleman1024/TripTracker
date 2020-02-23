@@ -5,6 +5,10 @@
     <RuntimeFrameworkName>Microsoft.AspNetCore.App</RuntimeFrameworkName>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI\TravelTrackerAPI.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
