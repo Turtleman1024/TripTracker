@@ -17,7 +17,7 @@ namespace TravelTrackerAPI.Data
 
         public DbSet<Trip> Trips { get; set; }
 
-        public static void SeedData(IServiceProvider serviceProvider )
+        public static void SeedData(IServiceProvider serviceProvider)
         {
             using (var serviceScope = serviceProvider
                 .GetRequiredService<IServiceScopeFactory>().CreateScope())

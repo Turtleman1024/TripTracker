@@ -41,6 +41,7 @@ namespace TravelTrackerAPI
 
             services.AddDbContext<TripContext>(options => options.UseSqlite("Data Source=TripTrackerDb.db"));
 
+            //Without XML Documentation 
             //services.AddSwaggerGen(options => 
             //    options.SwaggerDoc("v1", new Info { Title = "Trip Tracker", Version = "v1" })
             //);

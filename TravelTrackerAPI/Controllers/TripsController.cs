@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TravelTrackerAPI.Data;
 using TravelTrackerAPI.Models;
+using TravelTrackerDTO;
 
 namespace TravelTrackerAPI.Controllers
 {
@@ -36,14 +37,15 @@ namespace TravelTrackerAPI.Controllers
             //Get all the trips in the database
             //This should really be done in a different class
             var trips = await _dbContext.Trips
+                                        .AsNoTracking()
                                         .Include(t => t.Segments)
-                                        .Select( t => new TripWithSegments
+                                        .Select(t => new TripWithSegments
                                         {
                                             Id = t.Id,
                                             Name = t.Name,
                                             StartDate = t.StartDate,
                                             EndDate = t.EndDate,
-                                            Segments = t.Segments
+                                            Segments = t.Segments.ToList<SegmentDTO>()
                                         })
                                         .ToListAsync();
             return Ok(trips);
@@ -70,7 +72,7 @@ namespace TravelTrackerAPI.Controllers
                                         Name = t.Name,
                                         StartDate = t.StartDate,
                                         EndDate = t.EndDate,
-                                        Segments = t.Segments
+                                        Segments = t.Segments.ToList<SegmentDTO>()
                                     }).SingleOrDefault( t => t.Id == id);
         }
         #endregion
