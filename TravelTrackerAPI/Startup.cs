@@ -39,7 +39,7 @@ namespace TravelTrackerAPI
             //services.AddTransient<Models.Repository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<TripContext>(options => options.UseSqlite("Data Source=TripTrackerDb.db"));
+            services.AddDbContext<TravelContext>(options => options.UseSqlite("Data Source=TripTrackerDb.db"));
 
             //Without XML Documentation 
             //services.AddSwaggerGen(options => 
@@ -85,7 +85,7 @@ namespace TravelTrackerAPI
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            TripContext.SeedData(app.ApplicationServices);
+            TravelContext.SeedData(app.ApplicationServices);
 
         }
     }

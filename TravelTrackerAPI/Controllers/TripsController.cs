@@ -14,15 +14,15 @@ namespace TravelTrackerAPI.Controllers
     [ApiController]
     public class TripsController : Controller
     {
-        TripContext _dbContext;
+        TravelContext _dbContext;
 
-        public TripsController(TripContext dbContext)
+        public TripsController(TravelContext dbContext)
         {
             _dbContext = dbContext;
             //_dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
-        #region GET
+        #region Get
         // GET api/Trips
         /// <summary>
         /// Asynchronously Gets All Trips in the database  

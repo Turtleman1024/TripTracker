@@ -8,12 +8,12 @@ using TravelTrackerAPI.Models;
 
 namespace TravelTrackerAPI.Data
 {
-    public class TripContext : DbContext
+    public class TravelContext : DbContext
     {
-        public TripContext(DbContextOptions<TripContext> options)
+        public TravelContext(DbContextOptions<TravelContext> options)
             : base(options) { }
 
-        public TripContext() { }
+        public TravelContext() { }
 
         public DbSet<Trip> Trips { get; set; }
 
@@ -23,7 +23,7 @@ namespace TravelTrackerAPI.Data
                 .GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope
-                    .ServiceProvider.GetService<TripContext>();
+                    .ServiceProvider.GetService<TravelContext>();
 
                 context.Database.EnsureCreated();
 

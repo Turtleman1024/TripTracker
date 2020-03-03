@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TripTrackerDTO\TripTrackerDTO.csproj" />
+    <ProjectReference Include="..\TripTrackerDTO\TravelTrackerDTO.csproj" />
   </ItemGroup>
 
 </Project>
